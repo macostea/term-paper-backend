@@ -1,0 +1,19 @@
+{
+  "name": "transaction-manager",
+  "version": "0.0.1",
+  "description": "A web application for managing money transactions.",
+  "main": "server.js",
+  "repository": "",
+  "author": "Mihai Costea <mihai.andrei.costea@icloud.com>",
+  "dependencies": {
+    "express": "latest",
+    "body-parser": "^1.10.1",
+    "ejs": "^2.1.4",
+    "connect-flash": "^0.1.1",
+    "express-session": "^1.10.1",
+    "gulp": "latest",
+    "mongoose": "^3.8.21",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0"
+  }
+}
