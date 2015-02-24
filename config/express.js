@@ -30,6 +30,8 @@ module.exports = function() {
     
     require('../routes/index.server.routes.js')(app);
     require('../routes/user.server.routes.js')(app);
+    require('../routes/transaction.server.routes.js')(app);
+    require('../routes/account.server.routes.js')(app);
     
     return app;
 };
