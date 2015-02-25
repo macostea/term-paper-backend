@@ -24,28 +24,6 @@ var getErrorMessage = function(err) {
     return message;
 };
 
-exports.renderLogin = function(req, res, next) {
-    if (!req.user) {
-        res.render('login', {
-            title: 'Log in form',
-            messages: req.flash('error') || req.flash('info')
-        });
-    } else {
-        return res.redirect('/');
-    }
-};
-
-exports.renderRegister = function(req, res, next) {
-    if (!req.user) {
-        res.render('register', {
-            title: 'Register form',
-            messages: req.flash('error')
-        });
-    } else {
-        return res.redirect('/');
-    }
-};
-
 exports.register = function(req, res, next) {
     if (!req.user) {
         var user = new User(req.body);
@@ -54,20 +32,11 @@ exports.register = function(req, res, next) {
         user.save(function(err) {
             if (err) {
                 var message = getErrorMessage(err);
-                req.flash('error', message);
-                return res.redirect('/register');
+                res.json({'message':message});
             }
-            
-            req.login(user, function(err) {
-                if (err) {
-                    return next(err);
-                }
-                
-                return res.redirect('/');
-            })
         })
     } else {
-        return res.redirect('/');
+        res.json(req.user);
     }
 };
 
@@ -136,3 +105,7 @@ exports.delete = function(req, res, next) {
         }
     });
 };
+
+exports.loginSuccess = function(req, res) {
+    res.json({'message':'auth success'});
+}

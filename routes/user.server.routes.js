@@ -15,10 +15,8 @@ module.exports = function(app) {
         .post(users.register);
     app.route('/login')
         .get(users.renderLogin)
-        .post(passport.authenticate('local', {
-            successRedirect: '/',
-            failureRedirect: '/login',
-            failureFlash: true
-        }));
+        .post(passport.authenticate('local'), function (req, res) {
+            users.loginSuccess(req, res);
+        });
     app.get('/logout', users.logout);
 };
