@@ -6,24 +6,8 @@ module.exports = function() {
     var flash = require('connect-flash');
     var session = require('express-session');
     
-    var allowCrossDomain = function(req, res, next) {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    
-        // intercept OPTIONS method
-        if ('OPTIONS' == req.method) {
-          res.sendStatus(200);
-        }
-        else {
-          next();
-        }
-    };
-    
     var app = express();
     var router = express.Router();
-    
-    app.all('/api', allowCrossDomain);
     
     app.use(bodyParser.urlencoded({
         extended: true
@@ -45,6 +29,12 @@ module.exports = function() {
     console.log(req.method, req.url);
     // continue doing what we were doing and go to the route
     next(); 
+    });
+    
+    app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
     });
     
     require('../routes/index.server.routes.js')(router);
