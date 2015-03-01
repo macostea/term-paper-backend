@@ -11,10 +11,8 @@ module.exports = function(app) {
         .delete(users.delete);
     app.param('userId', users.userByID);
     app.route('/register')
-        .get(users.renderRegister)
         .post(users.register);
     app.route('/login')
-        .get(users.renderLogin)
         .post(passport.authenticate('local'), function (req, res) {
             users.loginSuccess(req, res);
         });

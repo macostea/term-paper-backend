@@ -1,4 +1,5 @@
-var Account = require('mongoose').model('Account');
+var Account = require('mongoose').model('Account'),
+    User = require('mongoose').model('User');
 
 exports.create = function(req, res, next) {
     var account = new Account(req.body);
@@ -37,6 +38,18 @@ exports.accountByID = function(req, res, next, id) {
                 return res.json({'message':'account not found'});
             }
             next();
+        }
+    });
+};
+
+exports.accountsByUserId = function(req, res, next) {
+    User.findOne({_id: req.params.user_Id})
+    .populate('accounts')
+    .exec(function (err, user) {
+        if (err) {
+            return next(err);
+        } else {
+            res.json(user.accounts);
         }
     });
 };

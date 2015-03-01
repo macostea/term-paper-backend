@@ -41,6 +41,26 @@ exports.transactionByID = function(req, res, next, id) {
     });
 };
 
+exports.transactionsForAccountId = function(req, res, next) {
+    var startDate = req.query.startDate;
+    var endDate = req.query.endDate;
+    var accountId = req.params.accountId;
+    
+    Transaction.find()
+    .where('source').equals(accountId)
+    .where('date').gt(startDate).lt(endDate)
+    .populate('source')
+    .populate('destination')
+    .sort('-date')
+    .exec(function(err, transactions) {
+        if (err) {
+            return next(err);
+        } else {
+            res.json(transactions);
+        }
+    });
+};
+
 exports.update = function(req, res, next) {
     Transaction.findByIdAndUpdate(req.user.id, req.body, function(err, transaction) {
         if (err) {

@@ -34,6 +34,8 @@ exports.register = function(req, res, next) {
                 var message = getErrorMessage(err);
                 res.json({'message':message});
             }
+            
+            res.json(user);
         })
     } else {
         res.json(req.user);

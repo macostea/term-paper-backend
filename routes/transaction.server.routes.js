@@ -9,4 +9,6 @@ module.exports = function(app) {
         .put(transactions.update)
         .delete(transactions.delete);
     app.param('transactionId', transactions.transactionByID);
+    app.route('/accounts/:accountId/transactions')
+        .get(transactions.transactionsForAccountId);
 };

@@ -13,7 +13,7 @@ module.exports = function() {
     
         // intercept OPTIONS method
         if ('OPTIONS' == req.method) {
-          res.send(200);
+          res.sendStatus(200);
         }
         else {
           next();
@@ -21,6 +21,7 @@ module.exports = function() {
     };
     
     var app = express();
+    var router = express.Router();
     
     app.use(allowCrossDomain);
     
@@ -39,15 +40,19 @@ module.exports = function() {
         secret: 'OurSuperSecretCookieSecret'
     }));
     
-    app.use(flash());
+    router.use(function(req, res, next) {
+    // log each request to the console
+    console.log(req.method, req.url);
+    // continue doing what we were doing and go to the route
+    next(); 
+    });
     
-    app.set('views', './views');
-    app.set('view engine', 'ejs');
+    require('../routes/index.server.routes.js')(router);
+    require('../routes/user.server.routes.js')(router);
+    require('../routes/transaction.server.routes.js')(router);
+    require('../routes/account.server.routes.js')(router);
     
-    require('../routes/index.server.routes.js')(app);
-    require('../routes/user.server.routes.js')(app);
-    require('../routes/transaction.server.routes.js')(app);
-    require('../routes/account.server.routes.js')(app);
+    app.use('/', router);
     
     return app;
 };

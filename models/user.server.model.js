@@ -10,7 +10,8 @@ var UserSchema = new Schema({
     provider: String,
     providerId: String,
     providerData: {},
-    transactions: {}
+    accounts: [{type: Schema.Types.ObjectId, ref: 'Account'}],
+    type: String
 });
 
 UserSchema.pre('save', function(next) {
