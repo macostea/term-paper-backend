@@ -23,7 +23,7 @@ module.exports = function() {
     var app = express();
     var router = express.Router();
     
-    app.use(allowCrossDomain);
+    app.all('/api', allowCrossDomain);
     
     app.use(bodyParser.urlencoded({
         extended: true
@@ -52,7 +52,7 @@ module.exports = function() {
     require('../routes/transaction.server.routes.js')(router);
     require('../routes/account.server.routes.js')(router);
     
-    app.use('/', router);
+    app.use('/api', router);
     
     return app;
 };
