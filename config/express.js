@@ -3,8 +3,8 @@ module.exports = function() {
     var express = require('express');
     var bodyParser = require('body-parser');
     var passport = require('passport');
-    var flash = require('connect-flash');
     var session = require('express-session');
+    var cors = require('cors');
     
     var app = express();
     var router = express.Router();
@@ -31,11 +31,8 @@ module.exports = function() {
     next(); 
     });
     
-    app.use(function(req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        next();
-    });
+    app.options('*', cors());
+    app.use(cors());
     
     require('../routes/index.server.routes.js')(router);
     require('../routes/user.server.routes.js')(router);
