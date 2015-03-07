@@ -1,4 +1,5 @@
 var Transaction = require('mongoose').model('Transaction');
+var moment = require('moment');
 
 exports.create = function(req, res, next) {
     var transaction = new Transaction(req.body);
@@ -42,9 +43,13 @@ exports.transactionByID = function(req, res, next, id) {
 };
 
 exports.transactionsForAccountId = function(req, res, next) {
-    var startDate = req.query.startDate;
-    var endDate = req.query.endDate;
+    var startDate = req.query.startDate || new moment().subtract(30, 'days');
+    var endDate = req.query.endDate || new moment();
     var accountId = req.params.accountId;
+    
+    if (!accountId) {
+        return res.json({'message': 'invalid parameters'});
+    }
     
     Transaction.find()
     .where('source').equals(accountId)
