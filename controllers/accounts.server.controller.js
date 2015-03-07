@@ -55,7 +55,7 @@ exports.accountsByUserId = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
-    Account.findByIdAndUpdate(req.user.id, req.body, function(err, account) {
+    Account.findByIdAndUpdate(req.account.id, req.body, function(err, account) {
         if (err) {
             return next(err);
         } else {
