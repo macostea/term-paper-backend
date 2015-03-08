@@ -56,6 +56,7 @@ exports.transactionsForAccountId = function(req, res, next) {
     .where('date').gt(startDate).lt(endDate)
     .populate('source')
     .populate('destination')
+    .populate('pastTransactions')
     .sort('-date')
     .exec(function(err, transactions) {
         if (err) {
