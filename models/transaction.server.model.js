@@ -6,7 +6,8 @@ var TransactionSchema = new Schema({
     source: {type: Schema.Types.ObjectId, ref: 'Account'},
     date: Date,
     destination: {type: Schema.Types.ObjectId, ref: 'Account'},
-    amount: Number
+    amount: Number,
+    status: String
 });
 
 mongoose.model('Transaction', TransactionSchema);

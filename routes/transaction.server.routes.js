@@ -8,7 +8,9 @@ module.exports = function(app) {
         .get(transactions.read)
         .put(transactions.update)
         .delete(transactions.delete);
-    app.param('transactionId', transactions.transactionByID);
     app.route('/accounts/:accountId/transactions')
         .get(transactions.transactionsForAccountId);
+    app.route('/transactions/:transactionId/status')
+        .post(transactions.setTransactionStatus);
+    app.param('transactionId', transactions.transactionByID);
 };

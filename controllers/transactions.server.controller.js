@@ -68,7 +68,7 @@ exports.transactionsForAccountId = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
-    Transaction.findByIdAndUpdate(req.user.id, req.body, function(err, transaction) {
+    Transaction.findByIdAndUpdate(req.transaction.id, req.body, function(err, transaction) {
         if (err) {
             return next(err);
         } else {
@@ -86,3 +86,13 @@ exports.delete = function(req, res, next) {
         }
     });
 };
+
+exports.setTransactionStatus = function(req, res, next) {
+    Transaction.findByIdAndUpdate(req.transaction.id, req.body, function(err, transaction) {
+        if (err) {
+            return next(err);
+        } else {
+            res.json(transaction);
+        }
+    })
+}
