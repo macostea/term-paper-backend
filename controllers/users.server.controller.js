@@ -1,5 +1,7 @@
 var User = require('mongoose').model('User'),
-    passport = require('passport');
+    passport = require('passport'),
+    jwt = require('jsonwebtoken'),
+    config = require('../config');
     
 var getErrorMessage = function(err) {
     var message = '';
@@ -29,6 +31,7 @@ exports.register = function(req, res, next) {
         var user = new User(req.body);
         var message = null;
         user.provider = 'local';
+        user.token = jwt.sign(user, config.jwtSecret);
         user.save(function(err) {
             if (err) {
                 var message = getErrorMessage(err);
@@ -109,5 +112,10 @@ exports.delete = function(req, res, next) {
 };
 
 exports.loginSuccess = function(req, res) {
-    res.json({'message':'auth success'});
+    res.json(
+        {
+            user:req.user,
+            token:req.user.token
+        }
+    );
 }

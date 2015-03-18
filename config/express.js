@@ -5,6 +5,8 @@ module.exports = function() {
     var passport = require('passport');
     var session = require('express-session');
     var cors = require('cors');
+    var morgan = require('morgan');
+    var jwt = require('jsonwebtoken');
     
     var app = express();
     var router = express.Router();

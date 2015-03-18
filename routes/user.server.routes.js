@@ -1,14 +1,15 @@
 var users = require('../controllers/users.server.controller');
 var passport = require('passport');
+var authorization = require('./authorization');
 
 module.exports = function(app) {
     app.route('/users')
-        .post(users.create)
-        .get(users.list);
+        .post(authorization.ensureAuthorized, users.create)
+        .get(authorization.ensureAuthorized, users.list);
     app.route('/users/:userId')
-        .get(users.read)
-        .put(users.update)
-        .delete(users.delete);
+        .get(authorization.ensureAuthorized, users.read)
+        .put(authorization.ensureAuthorized, users.update)
+        .delete(authorization.ensureAuthorized, users.delete);
     app.param('userId', users.userByID);
     app.route('/register')
         .post(users.register);
