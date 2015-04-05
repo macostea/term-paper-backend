@@ -1,14 +1,31 @@
 var Transaction = require('mongoose').model('Transaction');
+var Account = require('mongoose').model('Account');
 var moment = require('moment');
 
 exports.create = function(req, res, next) {
     var transaction = new Transaction(req.body);
-    transaction.save(function(err) {
-       if (err) {
-           return next(err);
-       } else {
-           res.json(transaction);
-       }
+    transaction.status = transaction.status || "pending";
+    transaction.date = transaction.date || Date.now();
+    
+    transaction.populate('source destination', function(err) {
+        if (err) {
+            return next(err);
+        } else {
+            transaction.destination.pastTransactions.push(transaction);
+            transaction.destination.currentFunds += transaction.amount;
+            transaction.source.pastTransactions.push(transaction);
+            transaction.source.currentFunds -= transaction.amount;
+            transaction.save(function(err) {
+               if (err) {
+                   return next(err);
+               } else {
+                   transaction.source.save();
+                   transaction.destination.save();
+                   
+                   res.json(transaction);
+                }
+            });
+        }
     });
 };
 
@@ -94,5 +111,5 @@ exports.setTransactionStatus = function(req, res, next) {
         } else {
             res.json(transaction);
         }
-    })
-}
+    });
+};

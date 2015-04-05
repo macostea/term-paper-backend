@@ -10,5 +10,5 @@ module.exports = function(app) {
         .put(authorization.ensureAuthorized, accounts.update)
         .delete(authorization.ensureAuthorized, accounts.delete);
     app.param('accountId', accounts.accountByID);
-    app.get('/users/:user_Id/accounts', accounts.accountsByUserId);
+    app.get('/users/:user_Id/accounts', authorization.ensureAuthorized, accounts.accountsByUserId);
 };
