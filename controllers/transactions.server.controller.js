@@ -60,7 +60,7 @@ exports.transactionByID = function(req, res, next, id) {
 };
 
 exports.transactionsForAccountId = function(req, res, next) {
-    var startDate = req.query.startDate || new moment().subtract(30, 'days');
+    var startDate = req.query.startDate || new moment().subtract(30, 'years');
     var endDate = req.query.endDate || new moment();
     var accountId = req.params.accountId;
     
