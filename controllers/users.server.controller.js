@@ -1,4 +1,5 @@
 var User = require('mongoose').model('User'),
+    Account = require('mongoose').model('Account'),
     passport = require('passport'),
     jwt = require('jsonwebtoken'),
     config = require('../config');
@@ -119,3 +120,22 @@ exports.loginSuccess = function(req, res) {
         }
     );
 }
+
+exports.addAccount = function(req, res, next) {
+    var account = new Account();
+    account.accountHolder = req.user;
+    account.save(function(err) {
+        if (err != null) {
+            return next(err);
+        }
+        
+        req.user.accounts.push(account);
+        req.user.save(function(err) {
+            if (err != null) {
+                return next(err);
+            }
+            
+            res.json(account);
+        });
+    });
+};

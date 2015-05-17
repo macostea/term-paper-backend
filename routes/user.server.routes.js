@@ -10,6 +10,8 @@ module.exports = function(app) {
         .get(authorization.ensureAuthorized, users.read)
         .put(authorization.ensureAuthorized, users.update)
         .delete(authorization.ensureAuthorized, users.delete);
+    app.route('/users/:userId/addAccount')
+        .post(authorization.ensureAuthorized, users.addAccount);
     app.param('userId', users.userByID);
     app.route('/register')
         .post(users.register);

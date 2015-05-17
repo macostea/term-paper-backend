@@ -12,8 +12,15 @@ exports.create = function(req, res, next) {
             return next(err);
         } else {
             transaction.destination.pastTransactions.push(transaction);
+            if (transaction.destination.currentFunds == null) {
+                transaction.destination.currentFunds = 0;
+            }
             transaction.destination.currentFunds += transaction.amount;
             transaction.source.pastTransactions.push(transaction);
+            if (transaction.destination.pastTransactions == null) {
+                transaction.destination.pastTransactions = [];
+            }
+            transaction.destination.pastTransactions.push(transaction);
             transaction.source.currentFunds -= transaction.amount;
             transaction.save(function(err) {
                if (err) {

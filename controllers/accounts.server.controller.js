@@ -3,6 +3,9 @@ var Account = require('mongoose').model('Account'),
 
 exports.create = function(req, res, next) {
     var account = new Account(req.body);
+    if (account.currentFunds == null) {
+        account.currentFunds = 0;
+    }
     account.save(function(err) {
        if (err) {
            return next(err);
